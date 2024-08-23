@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 구글 글꼴 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'IBM Plex Sans KR', sans-serif;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgb(255, 255, 255);
+            padding-top: 20px;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+            z-index: 500;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-250px);
+        }
+
+        .sidebar-links {
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-align: center;
+            display: block;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(18, 191, 243, 0.3);
+            color: black;
+        }
+
+        .sidebar a.logout-link {
+            margin-top: auto;
+            color: black;
+        }
+
+        .sidebar a.logout-link:hover {
+            background-color: transparent;
+            color: red;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #343a40;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content.shifted {
+            margin-left: 0;
+        }
+
+        /* 카드 스타일 */
+        .card {
+            margin: 20px 0;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .card-header {
+            background-color: rgba(18, 191, 243, 0.3);
+            color: black;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-custom {
+            background-color: rgba(18, 191, 243, 0.3);
+            color: black;
+            border: none;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-custom:hover {
+            background-color: rgba(18, 191, 243, 0.6);
+        }
+
+        .faq-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .faq-list li {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .faq-list li:hover {
+            background-color: rgba(18, 191, 243, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .sidebar.hidden {
+                transform: translateY(-100%);
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!-- 햄버거 아이콘 -->
+    <button class="toggle-btn" id="toggleSidebar">&#9776;</button>
+
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-links">
+            <p></p>
+            <p class="text-center">한이음</p>
+            <a href="/home">Home</a>
+            <a href="http://localhost:3000">텍스트 가명화</a>
+            <a href="/upload">파일 업로드 가명화</a>
+            <a href="/document_management">파일 관리 history</a>
+            <a href="/my_page">마이페이지</a>
+            <a href="/customer_support">고객 지원</a>
+        </div>
+        <a href="/logout" class="logout-link">
+            Logout <img src="/static/images/logout.png" alt="Logout Icon" style="width: 20px; height: 20px; margin-left: 5px;">
+        </a>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="content" id="content">
+        <div>
+            <h1 class="text-center mt-5">Customer Support</h1>
+            <p class="text-center">Get in touch with our support team.</p>
+
+            <div class="row">
+                <!-- Contact Form Card -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Contact Us</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="message">Message</label>
+                                    <textarea id="message" class="form-control" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-custom btn-block">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Card -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Frequently Asked Questions (FAQ)</div>
+                        <div class="card-body">
+                            <ul class="faq-list">
+                                <li>How do I reset my password?</li>
+                                <li>How can I delete my account?</li>
+                                <li>What is the best way to contact support?</li>
+                                <li>How do I download my data?</li>
+                                <li>How long does it take to get a response?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 부트스트랩 JS 및 팝퍼.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // 사이드바 표시 및 숨기기
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('shifted');
+        });
+    </script>
+</body>
+</html>

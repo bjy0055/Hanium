@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파일 업로드 가명화</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans KR', sans-serif;
+            padding: 0;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            padding-top: 20px;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+            z-index: 500;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-250px);
+        }
+
+        .sidebar-links {
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-align: center;
+            display: block;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(18, 191, 243, 0.3);
+            color: black;
+        }
+
+        .sidebar a.logout-link {
+            margin-top: auto;
+            color: black;
+        }
+
+        .sidebar a.logout-link:hover {
+            background-color: transparent;
+            color: red;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #343a40;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.shifted {
+            margin-left: 0;
+        }
+
+        .container-box {
+            max-width: 600px;
+            margin: 70px auto 50px;
+            padding: 30px 40px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: rgba(18, 191, 243, 0.7);
+            border: none;
+            font-weight: bold;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(18, 191, 243);
+        }
+
+        .btn-success {
+            margin-top: 20px;
+            background-color: #28a745;
+            border: none;
+            font-weight: bold;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        hr {
+            margin: 30px 0;
+        }
+
+        pre {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 햄버거 아이콘 -->
+    <button class="toggle-btn" id="toggleSidebar">&#9776;</button>
+
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-links">
+            <p></p>
+            <p class="text-center">한이음</p>
+            <a href="/home">Home</a>
+            <a href="http://localhost:3000">텍스트 가명화</a>
+            <a href="/upload">파일 업로드 가명화</a>
+            <a href="/document_management">파일 관리 history</a>
+            <a href="/my_page">마이페이지</a>
+            <a href="/customer_support">고객 지원</a>
+        </div>
+        <a href="/logout" class="logout-link">
+            Logout <img src="/static/images/logout.png" alt="Logout Icon" style="width: 20px; height: 20px; margin-left: 5px;">
+        </a>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container-box">
+            <h1 class="text-center">File Upload Anonymizer</h1>
+            <form id="upload-form" enctype="multipart/form-data" method="post">
+                <div class="form-group">
+                    <input type="file" id="input-file" class="form-control-file" name="file" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+            <hr>
+            <h2>Anonymized Text</h2>
+            <pre id="output-text">{{ masked_text }}</pre>
+
+            {% if download_link %}
+                <hr>
+                <a href="{{ url_for('download_file', filename=download_link.split('/')[-1]) }}" class="btn btn-success">Download Anonymized File</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Toggle Sidebar
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('shifted');
+        });
+    </script>
+</body>
+</html>

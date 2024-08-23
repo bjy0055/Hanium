@@ -1,0 +1,6 @@
+transformers
+torch
+flask
+pdfplumber
+mammoth
+lxml

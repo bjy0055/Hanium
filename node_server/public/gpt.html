@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Text Anonymizer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 구글 글꼴 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans KR', sans-serif;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container-box {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #anonymize-form {
+            margin-bottom: 30px;
+        }
+
+        #input-text {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(178, 218, 231, 0.3);
+            border: none;
+            resize: none;
+        }
+
+        #output-text {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgb(255, 255, 255);
+            padding-top: 20px;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+            z-index: 500;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-250px);
+        }
+
+        .sidebar-links {
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-align: center;
+            display: block;
+            color: black;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(18, 191, 243, 0.3);
+            color: black;
+        }
+
+        .sidebar a.logout-link {
+            margin-top: auto;
+            color: black;
+        }
+
+        .sidebar a.logout-link:hover {
+            background-color: transparent;
+            color: red;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #343a40;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .content {
+            margin-left: 350px; /* 사이드바 너비만큼 마진 추가 */
+            padding: 40px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.shifted {
+            margin-left: 50;
+        }
+
+        .btn-primary {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            background-color: rgba(18, 191, 243, 0.8);
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(18, 191, 243, 1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" id="toggleSidebar">&#9776;</button>
+
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-links">
+            <p></p>
+            <p class="text-center">한이음</p>
+            <a href="/home">Home</a>
+            <a href="http://localhost:3000">텍스트 가명화</a>
+            <a href="/upload">파일 업로드 가명화</a>
+            <a href="/document_management">파일 관리 history</a>
+            <a href="/my_page">마이페이지</a>
+            <a href="/customer_support">고객 지원</a>
+        </div>
+        <a href="/logout" class="logout-link">Logout</a>
+    </div>
+
+    <div class="content container-box" id="content">
+        <h2>텍스트를 간편하게 가명처리 하세요</h2>
+        <form id="anonymize-form" class="mb-3">
+            <textarea id="input-text" name="input-text" placeholder="가명처리할 텍스트를 입력하세요..."></textarea>
+            <button type="submit" class="btn btn-primary">Anonymize</button>
+        </form>
+        <h2>Anonymized Text</h2>
+        <pre id="output-text"></pre>
+    </div>
+
+    <!-- 제이쿼리 및 부트스트랩 스크립트 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('shifted');
+        });
+
+        document.getElementById('anonymize-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const text = document.getElementById('input-text').value;
+            const response = await fetch('/anonymize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            document.getElementById('output-text').textContent = result.anonymizedText;
+        });
+    </script>
+</body>
+</html>
