@@ -9,135 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'IBM Plex Sans KR', sans-serif;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
-
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #ffffff;
-            padding-top: 20px;
-            width: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s ease;
-            z-index: 500;
-            
-        }
-
-        .sidebar.hidden {
-            transform: translateX(-250px);
-        }
-
-        .sidebar-links {
-            flex-grow: 1;
-        }
-
-        .sidebar a {
-            padding: 15px;
-            text-align: center;
-            display: block;
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .sidebar a:hover {
-            background-color: rgba(18, 191, 243, 0.3);
-            color: black;
-        }
-
-        .sidebar a.logout-link {
-            margin-top: auto;
-            color: black;
-        }
-
-        .sidebar a.logout-link:hover {
-            background-color: transparent;
-            color: red;
-        }
-
-        .toggle-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 30px;
-            color: #343a40;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .content {
-            margin-left: 250px;
-            padding: 100px;
-            transition: margin-left 0.3s ease;
-        }
-
-        .content.shifted {
-            margin-left: 0;
-        }
-
-        .container-box {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .container-box h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .container-box p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .btn-primary {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 30px;
-            background-color: rgba(18, 191, 243, 0.8);
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: rgba(18, 191, 243, 1);
-        }
-
-        .btn-success {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 30px;
-            background-color: rgba(40, 167, 69, 0.8);
-            border: none;
-        }
-
-        .btn-success:hover {
-            background-color: rgba(40, 167, 69, 1);
-        }
-
-    </style>
+    <!-- 공통 스타일 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <!-- 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 <body>
 
@@ -150,9 +25,9 @@
             <p></p>
             <p class="text-center">한이음</p>
             <a href="/home">Home</a>
-            <a href="http://localhost:3000">텍스트 가명화</a>
+            <a href="/text">텍스트 가명화</a>
             <a href="/upload">파일 업로드 가명화</a>
-            <a href="/document_management">파일 관리 history</a>
+            <a href="/document_management">History</a>
             <a href="/my_page">마이페이지</a>
             <a href="/customer_support">고객 지원</a>
         </div>
@@ -167,7 +42,7 @@
             <h1 class="text-center">가명처리 서비스</h1>
             <p class="text-center">필요한 서비스를 선택하세요.</p>
             <div class="button-container">
-                <a href="http://localhost:3000" class="btn btn-primary">텍스트 가명화</a>
+                <a href="/text" class="btn btn-primary">텍스트 가명화</a>
                 <a href="/upload" class="btn btn-success">파일 업로드 가명화</a>
             </div>
         </div>

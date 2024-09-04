@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 업로드 가명화</title>
+    <title>Text Anonymizer</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- 공통 스타일 -->>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
-    <!-- 페이지 전용 스타일 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
-    <!-- 구글 폰트 -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <!-- Page-specific Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/text.css') }}">
 </head>
 <body>
-    <!-- 햄버거 아이콘 -->
+    <!-- Hamburger Icon -->
     <button class="toggle-btn" id="toggleSidebar">&#9776;</button>
 
-    <!-- 사이드바 -->
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-links">
             <p></p>
@@ -35,27 +35,28 @@
         </a>
     </div>
 
-    <div class="content" id="content">
-        <div class="container-box">
-            <h1 class="text-center">파일 업로드 가명화</h1>
-            <p>업로드 가능 파일: txt, docx, pdf, pptx</p>
-            <form id="upload-form" enctype="multipart/form-data" method="post">
-                <div class="form-group">
-                    <input type="file" id="input-file" class="form-control-file" name="file" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Upload File</button>
-            </form>
-            <hr>
-            <h2>파일 미리보기</h2>
-            <pre id="output-text">{{ masked_text }}</pre>
+    <!-- Main Content -->
+    <div class="content container-box">
+        <h2 class="text-center mb-4">텍스트를 간편하게 가명처리 하세요</h2>
+        <form id="anonymize-form" method="POST" action="/text">
+            <div class="form-group">
+                <!-- textarea에 original_text가 유지되도록 value를 설정 -->
+                <textarea id="input-text" name="input_text" class="form-control" rows="6" placeholder="가명처리할 텍스트를 입력하세요..." required>{{ original_text }}</textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg mt-3">Anonymize</button>
+            </div>
+        </form>
 
-            {% if download_link %}
-                <hr>
-                <a href="{{ url_for('download_file', filename=download_link.split('/')[-1]) }}" class="btn btn-success">Download Anonymized File</a>
-            {% endif %}
+        {% if masked_text %}
+        <h2 class="text-center mt-5">Anonymized Text</h2>
+        <div class="mt-3">
+            <pre id="output-text" class="p-3 bg-light border">{{ masked_text }}</pre>
         </div>
+        {% endif %}
     </div>
 
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -63,9 +64,7 @@
         // Toggle Sidebar
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
             sidebar.classList.toggle('hidden');
-            content.classList.toggle('shifted');
         });
     </script>
 </body>

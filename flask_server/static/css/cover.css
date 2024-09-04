@@ -1,55 +1,142 @@
-html, body {
-    height: 100%;
+body {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
     background-color: #f8f9fa;
 }
 
-body {
-    display: -ms-flexbox;
+.container-box {
+    width: 800px;
+    height: 500px; /* 높이 조정 */
+    margin: 100px auto;
+    padding: 60px 50px; /* 여백을 더 추가 */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
     display: flex;
-    -ms-flex-align: center;
+    flex-direction: column;
+    justify-content: center; /* 세로 중앙 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+}
+
+.header-content h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.header-content p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+}
+
+/* 섹션 스타일 */
+section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    color: black;
+    font-size: 2rem;
+    position: relative;
 }
 
-.cover-container {
-    max-width: 42em;
+#section1 {
+    background: whitesmoke;
 }
 
-.masthead {
-    margin-bottom: 2rem;
+#section2 {
+    background: whitesmoke;
 }
 
-.masthead-brand {
-    margin-bottom: 0;
+#section3 {
+    background: whitesmoke;
 }
 
-.nav-masthead .nav-link {
-    padding: .25rem 0;
-    font-weight: 700;
-    color: rgba(255, 255, 255, .5);
-    background-color: transparent;
-    border-bottom: .25rem solid transparent;
+.navbar-custom {
+    background-color: rgba(18, 191, 243, 0.6);
+    color: white;
 }
 
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus {
-    border-bottom-color: rgba(255, 255, 255, .25);
+.navbar-custom .nav-link {
+    color: black;
 }
 
-.nav-masthead .nav-link + .nav-link {
-    margin-left: 1rem;
+.navbar-custom .nav-link:hover {
+    color: white;
 }
 
-.nav-masthead .active {
-    color: #fff;
-    border-bottom-color: #fff;
+.btn-primary {
+    padding: 10px 20px;
+    font-size: 1.25rem;
 }
 
-.cover-heading {
-    font-weight: 300;
+h1, p, .btn {
+    position: relative;
+    z-index: 1;
 }
 
-.footer {
-    margin-top: auto;
+/* Footer */
+footer {
+    background-color: rgba(18, 191, 243, 0.6);
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.technology-section {
+    padding: 60px 20px;
+    background-color: whitesmoke;
+    text-align: left;
+}
+
+.technology-section img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    border-radius: 10px;
+}
+
+.technology-section .content {
+    margin-top: 30px;
+}
+
+.technology-section .content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.technology-section .content p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .container-box {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .header-content h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-content h1 {
+        font-size: 2rem;
+    }
+
+    .header-content p {
+        font-size: 1.1rem;
+    }
+
+    .container-box {
+        padding: 20px;
+    }
 }

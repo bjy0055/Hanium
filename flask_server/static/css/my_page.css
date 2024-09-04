@@ -1,0 +1,47 @@
+/* my_page.css */
+.form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.form-control:focus {
+    background-color: white;
+}
+
+.btn-custom {
+    background-color: rgba(18, 191, 243, 0.3);
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btn-custom:hover {
+    background-color: rgba(18, 191, 243, 0.6);
+}
+
+.btn-danger {
+    width: 100%;
+    font-weight: bold;
+}

@@ -1,0 +1,50 @@
+/* home.css */
+.container-box {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.container-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.container-box p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-primary {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    background-color: rgba(18, 191, 243, 0.8);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: rgba(18, 191, 243, 1);
+}
+
+.btn-success {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    background-color: rgba(40, 167, 69, 0.8);
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: rgba(40, 167, 69, 1);
+}

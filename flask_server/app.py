@@ -27,42 +27,43 @@ USER_CREDENTIALS = {
 
 # 개인정보 마스킹 함수 (정규식 사용)
 def maskText(text):
-    # 이름 마스킹 (예: 홍길동 -> 홍*동)
+    # 전화번호 마스킹 먼저 처리 (예: 010-1234-5678 -> [PHONE])
     maskedText = re.sub(
-        r'([가-힣]{1})([가-힣]{1,})([가-힣]{1})',
-        lambda m: m.group(1) + '*'*len(m.group(2)) + m.group(3),
+       r'(\d{2,3})-?(\d{3,4})-?(\d{4})',
+        r'[PHONE]',
         text
     )
 
-    # 전화번호 마스킹 (예: 010-1234-5678 -> 010-****-****)
+    # 이메일 마스킹 (example@example.com -> [EMAIL])
     maskedText = re.sub(
-        r'(\d{2,3})-(\d{3,4})-(\d{4})',
-        r'\1-****-****',
+        r'(\w+)(@\w+\.\w+)',
+        r'[EMAIL]',
         maskedText
     )
 
-    # 이메일 마스킹 (예: example@example.com -> eXXXX@XXXX.com)
+    # 주민등록번호 마스킹 (990101-1234567 -> [SSN])
     maskedText = re.sub(
-        r'(\w{1})(\w*)(@\w+\.\w+)',
-        r'\1****\3',
+         r'(\d{6})-([1-4])(\d{6})',
+        r'[SSN]',
         maskedText
     )
 
-    # 주소 마스킹 (예: 서울특별시 강남구 -> 서울XX X)
+    # 주소 마스킹 (서울특별시 강남구 -> [ADDRESS])
     maskedText = re.sub(
         r'([가-힣]+[시|도])\s+([가-힣]+[구|군|읍|면|동])',
-        lambda m: 'X'*len(m.group(1)) + ' ' + 'X'*len(m.group(2)),
+        r'[ADDRESS]',
         maskedText
     )
 
-    # 주민등록번호 마스킹 (예: 990101-1234567 -> 990101-1******)
+    # 이름 마스킹 (홍길동 -> 홍*동)
     maskedText = re.sub(
-        r'(\d{6})-([1-4])(\d{6})',
-        r'\1-\2******',
+        r'([가-힣]{2})([가-힣]{1})',
+        r'\1*\2',
         maskedText
     )
 
     return maskedText
+
 
 # 파일에서 텍스트 추출 함수
 def extractTextFromFile(file_path, file_type):
@@ -228,6 +229,20 @@ def customer_support():
     if 'username' in session:
         return render_template('customer_support.html')
     return redirect(url_for('login'))
+
+@app.route('/text', methods=['GET', 'POST'])
+def text():
+    if 'username' in session:
+        original_text = ""
+        masked_text = ""
+        
+        if request.method == 'POST':
+            original_text = request.form.get('input_text', '')
+            masked_text = maskText(original_text)  # maskText는 가명처리 함수
+        
+        return render_template('text.html', original_text=original_text, masked_text=masked_text)
+    return redirect(url_for('login'))
+
 
 
 

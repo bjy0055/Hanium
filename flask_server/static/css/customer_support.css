@@ -1,0 +1,89 @@
+/* customer_support.css */
+.card {
+    margin: 20px 0;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: rgba(18, 191, 243, 0.3);
+    color: black;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.btn-custom {
+    background-color: rgba(18, 191, 243, 0.3);
+    color: black;
+    border: none;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-custom:hover {
+    background-color: rgba(18, 191, 243, 0.6);
+}
+
+.faq-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.faq-list li {
+    margin-bottom: 20px;
+}
+
+.faq-question {
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.faq-question:hover {
+    background-color: rgba(18, 191, 243, 0.3);
+}
+
+.faq-answer {
+    display: none;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .sidebar.hidden {
+        transform: translateY(-100%);
+    }
+}
