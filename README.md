@@ -7,9 +7,9 @@
 
 
 <h2>🖤Member</h2>
-**백지윤** -- FE </t>
-**강채리** -- BE </t>
-**진수화** -- PM </t>
+백지윤 -- FE    
+강채리 -- BE    
+진수화 -- PM    
 
 <h2>🖤시연 영상</h2>
-https://youtu.be/dDLCMTdAa9g?si=HXQjRYOHwRqo5BK2
+* 외부 링크: <https://youtu.be/dDLCMTdAa9g?si=HXQjRYOHwRqo5BK2>
